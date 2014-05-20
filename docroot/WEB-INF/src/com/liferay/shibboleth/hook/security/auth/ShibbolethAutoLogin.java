@@ -165,7 +165,7 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 			PrefsPropsUtil.getString(
 				companyId, PropsKeys.SHIBBOLETH_USERNAME_HEADER,
 				PropsValues.SHIBBOLETH_USERNAME_HEADER));
-		String screenName = shibbolethUserNameHeader.replaceAll("@", ".at.");
+		String screenName = shibbolethUserNameHeader.replaceAll("@", "");
 
 		String shibbolethUserEMailHeader = request.getHeader(
 			PrefsPropsUtil.getString(
@@ -238,21 +238,22 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 				List liferayGroupsList = new ArrayList();
 				Collections.addAll(liferayGroupsList, liferayGroups); 
 				
-				// check for every Shibboleth group, wether the group should be mapped to Lifay
+				// check for every Shibboleth group, wether the group should be mapped to Liferay
+				List<Long> userGroups = new ArrayList<Long>();
 				for (String element: shibbolethGroups)
 				{
-					List<Long> userGroups = new ArrayList<Long>();
+				  	_log.error("group " + element);
 					if (liferayGroupsList.contains(element)) {
 						userGroups.add(UserGroupLocalServiceUtil.getUserGroup(companyId, element).getUserGroupId());
 					}
-					// convert List<Long> to long[]
-					long[] userGroupIds = new long[userGroups.size()];
-					for (int i = 0; i < userGroups.size(); i++){
-				        	userGroupIds[i] = userGroups.get(i);
-					}
-					// set usergroups
-					UserGroupLocalServiceUtil.setUserUserGroups(user.getUserId(), userGroupIds);
 				}
+				// convert List<Long> to long[]
+				long[] userGroupIds = new long[userGroups.size()];
+				for (int i = 0; i < userGroups.size(); i++){
+			        	userGroupIds[i] = userGroups.get(i);
+				}
+				// set usergroups
+				UserGroupLocalServiceUtil.setUserUserGroups(user.getUserId(), userGroupIds);
 
 			}
 		}
