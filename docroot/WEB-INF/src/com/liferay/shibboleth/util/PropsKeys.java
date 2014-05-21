@@ -32,9 +32,6 @@ public class PropsKeys {
 	public static final String SHIBBOLETH_LOGOUT_URL = 
 	 	 "shibboleth.logout.url";
 
-	public static final String SHIBBOLETH_USER_HEADER =
-		"shibboleth.user.header";
-
 	public static final String SHIBBOLETH_USERNAME_HEADER = 
 		"shibboleth.user.username.header";
 

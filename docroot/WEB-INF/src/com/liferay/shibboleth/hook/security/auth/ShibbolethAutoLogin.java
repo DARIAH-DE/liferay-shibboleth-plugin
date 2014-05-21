@@ -117,49 +117,6 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 			return null;
 		}
 
-		String shibbolethUserHeader = request.getHeader(
-			PrefsPropsUtil.getString(
-				companyId, PropsKeys.SHIBBOLETH_USER_HEADER,
-				PropsValues.SHIBBOLETH_USER_HEADER));
-
-		if (Validator.isNull(shibbolethUserHeader)) {
-			return null;
-		}
-
-		String authType = company.getAuthType();
-
-		User user = null;
-
-		if (PrefsPropsUtil.getBoolean(
-				companyId, PropsKeys.SHIBBOLETH_IMPORT_FROM_LDAP,
-				PropsValues.SHIBBOLETH_IMPORT_FROM_LDAP)) {
-
-			try {
-				if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
-					user = PortalLDAPImporterUtil.importLDAPUser(
-						companyId, shibbolethUserHeader, StringPool.BLANK);
-				}
-				else {
-					user = PortalLDAPImporterUtil.importLDAPUser(
-						companyId, StringPool.BLANK, shibbolethUserHeader);
-				}
-			}
-			catch (SystemException se) {
-			}
-		}
-
-		// log in the user
-		if (user == null) {
-			if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
-				user = UserLocalServiceUtil.fetchUserByEmailAddress(
-					companyId, shibbolethUserHeader);
-			}
-			else {
-				user = UserLocalServiceUtil.fetchUserByScreenName(
-					companyId, shibbolethUserHeader);
-			}
-		}
-
 		// Gather Shibboleth user data from environment
 		String shibbolethUserNameHeader = request.getHeader(
 			PrefsPropsUtil.getString(
@@ -181,6 +138,44 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 			PrefsPropsUtil.getString(
 				companyId, PropsKeys.SHIBBOLETH_LASTNAME_HEADER,
 				PropsValues.SHIBBOLETH_LASTNAME_HEADER));
+
+		if ((Validator.isNull(shibbolethUserNameHeader)) || (Validator.isNull(shibbolethUserEMailHeader))) {
+			return null;
+		}
+
+		String authType = company.getAuthType();
+
+		User user = null;
+
+		if (PrefsPropsUtil.getBoolean(
+				companyId, PropsKeys.SHIBBOLETH_IMPORT_FROM_LDAP,
+				PropsValues.SHIBBOLETH_IMPORT_FROM_LDAP)) {
+
+			try {
+				if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
+					user = PortalLDAPImporterUtil.importLDAPUser(
+						companyId, shibbolethUserEMailHeader, StringPool.BLANK);
+				}
+				else {
+					user = PortalLDAPImporterUtil.importLDAPUser(
+						companyId, StringPool.BLANK, shibbolethUserNameHeader);
+				}
+			}
+			catch (SystemException se) {
+			}
+		}
+
+		// log in the user
+		if (user == null) {
+			if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
+				user = UserLocalServiceUtil.fetchUserByEmailAddress(
+					companyId, shibbolethUserEMailHeader);
+			}
+			else {
+				user = UserLocalServiceUtil.fetchUserByScreenName(
+					companyId, shibbolethUserNameHeader);
+			}
+		}
 
 
 		// create a liferay user if none exists
@@ -242,7 +237,6 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 				List<Long> userGroups = new ArrayList<Long>();
 				for (String element: shibbolethGroups)
 				{
-				  	_log.error("group " + element);
 					if (liferayGroupsList.contains(element)) {
 						userGroups.add(UserGroupLocalServiceUtil.getUserGroup(companyId, element).getUserGroupId());
 					}
