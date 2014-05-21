@@ -36,9 +36,6 @@ public class PropsValues {
 	public static final String SHIBBOLETH_LOGOUT_URL = GetterUtil.getString(
 		PropsUtil.get(PropsKeys.SHIBBOLETH_LOGOUT_URL));
 
-	public static final String SHIBBOLETH_USER_HEADER = GetterUtil.getString(
-		PropsUtil.get(PropsKeys.SHIBBOLETH_USER_HEADER));
-
 	public static final String SHIBBOLETH_USERNAME_HEADER = GetterUtil.getString(
 		PropsUtil.get(PropsKeys.SHIBBOLETH_USERNAME_HEADER));
 

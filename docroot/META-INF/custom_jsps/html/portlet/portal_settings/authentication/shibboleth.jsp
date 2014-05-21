@@ -22,7 +22,6 @@ boolean shibbolethAuthEnabled = PrefsPropsUtil.getBoolean(company.getCompanyId()
 boolean shibbolethImportFromLdap = PrefsPropsUtil.getBoolean(company.getCompanyId(), _SHIBBOLETH_IMPORT_FROM_LDAP_KEY, _SHIBBOLETH_IMPORT_FROM_LDAP_VALUE);
 boolean shibbolethUserAutoCreate = PrefsPropsUtil.getBoolean(company.getCompanyId(), _SHIBBOLETH_USER_AUTO_CREATE_KEY, _SHIBBOLETH_USER_AUTO_CREATE_VALUE);
 String shibbolethLogoutURL = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_LOGOUT_URL_KEY, _SHIBBOLETH_LOGOUT_URL_VALUE);
-String shibbolethUserHeader = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_USER_HEADER_KEY, _SHIBBOLETH_USER_HEADER_VALUE);
 String shibbolethUserNameHeader = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_USERNAME_HEADER_KEY, _SHIBBOLETH_USERNAME_HEADER_VALUE);
 String shibbolethUserEMailHeader = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_EMAIL_HEADER_KEY, _SHIBBOLETH_EMAIL_HEADER_VALUE);
 String shibbolethUserFirstNameHeader = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_FIRSTNAME_HEADER_KEY, _SHIBBOLETH_FIRSTNAME_HEADER_VALUE);
@@ -39,8 +38,6 @@ String shibbolethGroupsTouse = PrefsPropsUtil.getString(company.getCompanyId(), 
 	<aui:input label="shibboleth-user-autocreate" helpMessage="shibboleth-user-autocreate-help" name='<%= "settings--" + _SHIBBOLETH_USER_AUTO_CREATE_KEY + "--" %>' type="checkbox" value="<%= shibbolethUserAutoCreate %>" />
 
 	<aui:input cssClass="lfr-input-text-container" label="logout-url" name='<%= "settings--" + _SHIBBOLETH_LOGOUT_URL_KEY + "--" %>' type="text" value="<%= shibbolethLogoutURL %>" />
-
-	<aui:input cssClass="lfr-input-text-container" helpMessage="user-header-help" label="user-header" name='<%= "settings--" + _SHIBBOLETH_USER_HEADER_KEY + "--" %>' type="text" value="<%= shibbolethUserHeader %>" />
 
 	<aui:input cssClass="lfr-input-text-container" helpMessage="shibboleth-username-header-help" label="shibboleth-username-header" name='<%= "settings--" + _SHIBBOLETH_USERNAME_HEADER_KEY + "--" %>' type="text" value="<%= shibbolethUserNameHeader %>" />
 
@@ -74,10 +71,6 @@ private static final boolean _SHIBBOLETH_USER_AUTO_CREATE_VALUE = GetterUtil.get
 private static final String _SHIBBOLETH_LOGOUT_URL_KEY = "shibboleth.logout.url";
 
 private static final String _SHIBBOLETH_LOGOUT_URL_VALUE = GetterUtil.getString(PropsUtil.get(_SHIBBOLETH_LOGOUT_URL_KEY));
-
-private static final String _SHIBBOLETH_USER_HEADER_KEY = "shibboleth.user.header";
-
-private static final String _SHIBBOLETH_USER_HEADER_VALUE = GetterUtil.getString(PropsUtil.get(_SHIBBOLETH_USER_HEADER_KEY));
 
 private static final String _SHIBBOLETH_USERNAME_HEADER_KEY = "shibboleth.user.username.header";
 
