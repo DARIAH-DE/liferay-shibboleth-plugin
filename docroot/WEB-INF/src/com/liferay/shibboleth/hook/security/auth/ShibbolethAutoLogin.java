@@ -109,6 +109,14 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
+		String shibbolethUserNameHeader = null;
+		String screenName = null;
+		String shibbolethUserEMailHeader = null;
+		String shibbolethUserFirstNameHeader = null;
+		String shibbolethUserLastNameHeader = null;
+		String shibbolethGroupsHeader = null;
+
+
 		Company company = PortalUtil.getCompany(request);
 		
 		long companyId = company.getCompanyId();
@@ -117,27 +125,58 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 			return null;
 		}
 
-		// Gather Shibboleth user data from environment
-		String shibbolethUserNameHeader = request.getHeader(
-			PrefsPropsUtil.getString(
-				companyId, PropsKeys.SHIBBOLETH_USERNAME_HEADER,
-				PropsValues.SHIBBOLETH_USERNAME_HEADER));
-		String screenName = shibbolethUserNameHeader.replaceAll("@", "");
+		// Gather Shibboleth user data
+		if (PrefsPropsUtil.getBoolean(
+			companyId, PropsKeys.SHIBBOLETH_HEADERS_ENABLED,
+			PropsValues.SHIBBOLETH_HEADERS_ENABLED)) {
+			
+			// use headers
+			shibbolethUserNameHeader = (String) request.getHeader(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_USERNAME_HEADER,
+					PropsValues.SHIBBOLETH_USERNAME_HEADER));
+			screenName = shibbolethUserNameHeader.replaceAll("@", "");
 
-		String shibbolethUserEMailHeader = request.getHeader(
-			PrefsPropsUtil.getString(
-				companyId, PropsKeys.SHIBBOLETH_EMAIL_HEADER,
-				PropsValues.SHIBBOLETH_EMAIL_HEADER));
+			shibbolethUserEMailHeader = (String) request.getHeader(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_EMAIL_HEADER,
+					PropsValues.SHIBBOLETH_EMAIL_HEADER));
 
-		String shibbolethUserFirstNameHeader = request.getHeader(
-			PrefsPropsUtil.getString(
-				companyId, PropsKeys.SHIBBOLETH_FIRSTNAME_HEADER,
-				PropsValues.SHIBBOLETH_FIRSTNAME_HEADER));
+			shibbolethUserFirstNameHeader = (String) request.getHeader(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_FIRSTNAME_HEADER,
+					PropsValues.SHIBBOLETH_FIRSTNAME_HEADER));
 
-		String shibbolethUserLastNameHeader = request.getHeader(
-			PrefsPropsUtil.getString(
-				companyId, PropsKeys.SHIBBOLETH_LASTNAME_HEADER,
-				PropsValues.SHIBBOLETH_LASTNAME_HEADER));
+			shibbolethUserLastNameHeader = (String) request.getHeader(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_LASTNAME_HEADER,
+					PropsValues.SHIBBOLETH_LASTNAME_HEADER));
+			
+		}
+		else {
+			// use environment
+			shibbolethUserNameHeader = (String) request.getAttribute(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_USERNAME_HEADER,
+					PropsValues.SHIBBOLETH_USERNAME_HEADER));
+			screenName = shibbolethUserNameHeader.replaceAll("@", "");
+	
+			shibbolethUserEMailHeader = (String) request.getAttribute(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_EMAIL_HEADER,
+					PropsValues.SHIBBOLETH_EMAIL_HEADER));
+
+			shibbolethUserFirstNameHeader = (String) request.getAttribute(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_FIRSTNAME_HEADER,
+					PropsValues.SHIBBOLETH_FIRSTNAME_HEADER));
+
+			shibbolethUserLastNameHeader = (String) request.getAttribute(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_LASTNAME_HEADER,
+					PropsValues.SHIBBOLETH_LASTNAME_HEADER));
+
+		}
 
 		if ((Validator.isNull(shibbolethUserNameHeader)) || (Validator.isNull(shibbolethUserEMailHeader))) {
 			return null;
@@ -208,13 +247,27 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 			}
 		}
 
-		// Gather Shibboleth group data from environment and Lifery groups
+		// Gather Shibboleth group data
+		if (PrefsPropsUtil.getBoolean(
+			companyId, PropsKeys.SHIBBOLETH_HEADERS_ENABLED,
+			PropsValues.SHIBBOLETH_HEADERS_ENABLED)) {
 
-		String shibbolethGroupsHeader = request.getHeader(
-			PrefsPropsUtil.getString(
-				companyId, PropsKeys.SHIBBOLETH_GROUPS_HEADER,
-				PropsValues.SHIBBOLETH_GROUPS_HEADER));
+			// use headers
+			shibbolethGroupsHeader = (String) request.getHeader(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_GROUPS_HEADER,
+					PropsValues.SHIBBOLETH_GROUPS_HEADER));
+		}
+		else {
+			// use envirenment
+			shibbolethGroupsHeader = (String) request.getAttribute(
+				PrefsPropsUtil.getString(
+					companyId, PropsKeys.SHIBBOLETH_GROUPS_HEADER,
+					PropsValues.SHIBBOLETH_GROUPS_HEADER));
 
+		}
+
+		// Get used Liferay groups
 		String shibbolethGroupsTouse = PrefsPropsUtil.getString(
 				companyId, PropsKeys.SHIBBOLETH_GROUPS_TOUSE,
 				PropsValues.SHIBBOLETH_GROUPS_TOUSE);
