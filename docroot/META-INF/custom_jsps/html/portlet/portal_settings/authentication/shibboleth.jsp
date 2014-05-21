@@ -29,6 +29,7 @@ String shibbolethUserLastNameHeader = PrefsPropsUtil.getString(company.getCompan
 boolean shibbolethGroupsEnableMapping = PrefsPropsUtil.getBoolean(company.getCompanyId(), _SHIBBOLETH_GROUPS_ENABLEMAPPING_KEY, _SHIBBOLETH_GROUPS_ENABLEMAPPING_VALUE);
 String shibbolethGroupsHeader = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_GROUPS_HEADER_KEY, _SHIBBOLETH_GROUPS_HEADER_VALUE);
 String shibbolethGroupsTouse = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_GROUPS_TOUSE_KEY, _SHIBBOLETH_GROUPS_TOUSE_VALUE);
+boolean shibbolethHeadersEnabled = PrefsPropsUtil.getBoolean(company.getCompanyId(), _SHIBBOLETH_HEADERS_ENABLED_KEY, _SHIBBOLETH_HEADERS_ENABLED_VALUE);
 %>
 
 <aui:fieldset>
@@ -52,6 +53,8 @@ String shibbolethGroupsTouse = PrefsPropsUtil.getString(company.getCompanyId(), 
 	<aui:input cssClass="lfr-input-text-container" helpMessage="shibboleth-groups-header-help" label="shibboleth-groups-header" name='<%= "settings--" + _SHIBBOLETH_GROUPS_HEADER_KEY + "--" %>' type="text" value="<%= shibbolethGroupsHeader %>" />
 
 	<aui:input cssClass="lfr-input-text-container" helpMessage="shibboleth-groups-touse-help" label="shibboleth-groups-touse" name='<%= "settings--" + _SHIBBOLETH_GROUPS_TOUSE_KEY + "--" %>' type="text" value="<%= shibbolethGroupsTouse %>" />
+
+	<aui:input label="shibboleth-headers-enabled" helpMessage="shibboleth-headers-enabled-help" name='<%= "settings--" + _SHIBBOLETH_HEADERS_ENABLED_KEY + "--" %>' type="checkbox" value="<%= shibbolethHeadersEnabled %>" />
 
 </aui:fieldset>
 
@@ -100,5 +103,8 @@ private static final String _SHIBBOLETH_GROUPS_TOUSE_KEY = "shibboleth.groups.to
 
 private static final String _SHIBBOLETH_GROUPS_TOUSE_VALUE = GetterUtil.getString(PropsUtil.get(_SHIBBOLETH_GROUPS_TOUSE_KEY));
 
+private static final String _SHIBBOLETH_HEADERS_ENABLED_KEY = "shibboleth.headers.enabled";
+
+private static final boolean _SHIBBOLETH_HEADERS_ENABLED_VALUE = GetterUtil.getBoolean(PropsUtil.get(_SHIBBOLETH_HEADERS_ENABLED_KEY));
 %>
 
