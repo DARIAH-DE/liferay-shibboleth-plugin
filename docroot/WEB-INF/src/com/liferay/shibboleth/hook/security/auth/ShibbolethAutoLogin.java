@@ -268,30 +268,26 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 		}
 
 		// Get used Liferay groups
-		String shibbolethGroupsTouse = PrefsPropsUtil.getString(
-				companyId, PropsKeys.SHIBBOLETH_GROUPS_TOUSE,
-				PropsValues.SHIBBOLETH_GROUPS_TOUSE);
+		String shibbolethGroupsHeaderSplit = PrefsPropsUtil.getString(
+				companyId, PropsKeys.SHIBBOLETH_GROUPS_HEADER_SPLIT,
+				PropsValues.SHIBBOLETH_GROUPS_HEADER_SPLIT);
 
 		// map Shibboleth groups to Liferay groups  
-		if ((null != shibbolethGroupsTouse) && (null != shibbolethGroupsHeader) && (shibbolethGroupsHeader.length()) > 0 && (shibbolethGroupsTouse.length() > 0)) {
+		if ((null != shibbolethGroupsHeaderSplit) && (null != shibbolethGroupsHeader) && (shibbolethGroupsHeader.length()) > 0) {
 		  	if (PrefsPropsUtil.getBoolean(companyId, PropsKeys.SHIBBOLETH_GROUPS_ENABLEMAPPING,PropsValues.SHIBBOLETH_GROUPS_ENABLEMAPPING)) {
 
 			  	// remove all groups
 			  	UserGroupLocalServiceUtil.setUserUserGroups(user.getUserId(), new long[0]);
 
-				// prepare group arrays
-		 		String shibbolethGroups[] = shibbolethGroupsHeader.split(";");
-				String liferayGroups[] = shibbolethGroupsTouse.split(";");
-
-				List liferayGroupsList = new ArrayList();
-				Collections.addAll(liferayGroupsList, liferayGroups); 
-				
-				// check for every Shibboleth group, wether the group should be mapped to Liferay
+				// try to map each Shibboleth group to a Liferay group
+		 		String shibbolethGroups[] = shibbolethGroupsHeader.split(shibbolethGroupsHeaderSplit);
 				List<Long> userGroups = new ArrayList<Long>();
 				for (String element: shibbolethGroups)
 				{
-					if (liferayGroupsList.contains(element)) {
+					try {
 						userGroups.add(UserGroupLocalServiceUtil.getUserGroup(companyId, element).getUserGroupId());
+					} catch(Exception e) {
+					  	// ignore Shibboleth group if no matching Liferay group exists
 					}
 				}
 				// convert List<Long> to long[]

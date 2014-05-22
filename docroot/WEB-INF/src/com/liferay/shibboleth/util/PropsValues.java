@@ -54,8 +54,8 @@ public class PropsValues {
 	public static final String SHIBBOLETH_GROUPS_HEADER = GetterUtil.getString(
 		PropsUtil.get(PropsKeys.SHIBBOLETH_GROUPS_HEADER));
 
-	public static final String SHIBBOLETH_GROUPS_TOUSE = GetterUtil.getString(
-		PropsUtil.get(PropsKeys.SHIBBOLETH_GROUPS_TOUSE));
+	public static final String SHIBBOLETH_GROUPS_HEADER_SPLIT = GetterUtil.getString(
+		PropsUtil.get(PropsKeys.SHIBBOLETH_GROUPS_HEADER_SPLIT));
 
 	public static final boolean SHIBBOLETH_HEADERS_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.SHIBBOLETH_HEADERS_ENABLED));
