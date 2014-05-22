@@ -28,7 +28,7 @@ String shibbolethUserFirstNameHeader = PrefsPropsUtil.getString(company.getCompa
 String shibbolethUserLastNameHeader = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_LASTNAME_HEADER_KEY, _SHIBBOLETH_LASTNAME_HEADER_VALUE);
 boolean shibbolethGroupsEnableMapping = PrefsPropsUtil.getBoolean(company.getCompanyId(), _SHIBBOLETH_GROUPS_ENABLEMAPPING_KEY, _SHIBBOLETH_GROUPS_ENABLEMAPPING_VALUE);
 String shibbolethGroupsHeader = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_GROUPS_HEADER_KEY, _SHIBBOLETH_GROUPS_HEADER_VALUE);
-String shibbolethGroupsTouse = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_GROUPS_TOUSE_KEY, _SHIBBOLETH_GROUPS_TOUSE_VALUE);
+String shibbolethGroupsHeaderSplit = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_GROUPS_HEADER_SPLIT_KEY, _SHIBBOLETH_GROUPS_HEADER_SPLIT_VALUE);
 boolean shibbolethHeadersEnabled = PrefsPropsUtil.getBoolean(company.getCompanyId(), _SHIBBOLETH_HEADERS_ENABLED_KEY, _SHIBBOLETH_HEADERS_ENABLED_VALUE);
 %>
 
@@ -52,7 +52,7 @@ boolean shibbolethHeadersEnabled = PrefsPropsUtil.getBoolean(company.getCompanyI
 
 	<aui:input cssClass="lfr-input-text-container" helpMessage="shibboleth-groups-header-help" label="shibboleth-groups-header" name='<%= "settings--" + _SHIBBOLETH_GROUPS_HEADER_KEY + "--" %>' type="text" value="<%= shibbolethGroupsHeader %>" />
 
-	<aui:input cssClass="lfr-input-text-container" helpMessage="shibboleth-groups-touse-help" label="shibboleth-groups-touse" name='<%= "settings--" + _SHIBBOLETH_GROUPS_TOUSE_KEY + "--" %>' type="text" value="<%= shibbolethGroupsTouse %>" />
+	<aui:input cssClass="lfr-input-text-container" helpMessage="shibboleth-groups-header-split-help" label="shibboleth-groups-header-split" name='<%= "settings--" + _SHIBBOLETH_GROUPS_HEADER_SPLIT_KEY + "--" %>' type="text" value="<%= shibbolethGroupsHeaderSplit %>" />
 
 	<aui:input label="shibboleth-headers-enabled" helpMessage="shibboleth-headers-enabled-help" name='<%= "settings--" + _SHIBBOLETH_HEADERS_ENABLED_KEY + "--" %>' type="checkbox" value="<%= shibbolethHeadersEnabled %>" />
 
@@ -99,9 +99,9 @@ private static final String _SHIBBOLETH_GROUPS_HEADER_KEY = "shibboleth.groups.h
 
 private static final String _SHIBBOLETH_GROUPS_HEADER_VALUE = GetterUtil.getString(PropsUtil.get(_SHIBBOLETH_GROUPS_HEADER_KEY));
 
-private static final String _SHIBBOLETH_GROUPS_TOUSE_KEY = "shibboleth.groups.touse";
+private static final String _SHIBBOLETH_GROUPS_HEADER_SPLIT_KEY = "shibboleth.groups.header.split";
 
-private static final String _SHIBBOLETH_GROUPS_TOUSE_VALUE = GetterUtil.getString(PropsUtil.get(_SHIBBOLETH_GROUPS_TOUSE_KEY));
+private static final String _SHIBBOLETH_GROUPS_HEADER_SPLIT_VALUE = GetterUtil.getString(PropsUtil.get(_SHIBBOLETH_GROUPS_HEADER_SPLIT_KEY));
 
 private static final String _SHIBBOLETH_HEADERS_ENABLED_KEY = "shibboleth.headers.enabled";
 

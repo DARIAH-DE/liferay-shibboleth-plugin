@@ -50,8 +50,8 @@ public class PropsKeys {
 	public static final String SHIBBOLETH_GROUPS_HEADER = 
 		"shibboleth.groups.header";
 
-	public static final String SHIBBOLETH_GROUPS_TOUSE = 
-		"shibboleth.groups.touse";
+	public static final String SHIBBOLETH_GROUPS_HEADER_SPLIT = 
+		"shibboleth.groups.header.split";
 
 	public static final String SHIBBOLETH_HEADERS_ENABLED = 
 		"shibboleth.headers.enabled";
