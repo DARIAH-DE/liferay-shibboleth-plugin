@@ -60,4 +60,6 @@ public class PropsValues {
 	public static final boolean SHIBBOLETH_HEADERS_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.SHIBBOLETH_HEADERS_ENABLED));
 
+	public static final boolean SHIBBOLETH_REENCODE_ENABLED = GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.SHIBBOLETH_REENCODE_ENABLED));
 }

@@ -56,6 +56,6 @@ public class PropsKeys {
 	public static final String SHIBBOLETH_HEADERS_ENABLED = 
 		"shibboleth.headers.enabled";
 
-
-
+	public static final String SHIBBOLETH_REENCODE_ENABLED =
+		"shibboleth.reencode.enabled";
 }

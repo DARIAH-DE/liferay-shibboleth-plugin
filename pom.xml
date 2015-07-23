@@ -5,7 +5,7 @@
 	<groupId>eu.dariah.de</groupId>
 	<artifactId>shibb-plugin</artifactId>
 	<packaging>war</packaging>
-	<name>shibb-plugin Hook</name>
+	<name>Shibboleth Single Sign On Hook</name>
 	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<liferay.version>6.2.1</liferay.version>
@@ -24,6 +24,7 @@
 					<appServerPortalDir>${liferay.app.server.portal.dir}</appServerPortalDir>
 					<liferayVersion>${liferay.version}</liferayVersion>
 					<pluginType>hook</pluginType>
+					<pluginName>CENDARI Shibboleth Authentication Plugin</pluginName>
 				</configuration>
 			</plugin>
 			<plugin>
