@@ -1,14 +1,14 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  * Copyright (c) 2014 Georg-August-Universität Göttingen
- *
+ * <p/>
  * Liferay Shibboleth hook based on Liferay plugins by Liferay, Inc.
- *
+ * <p/>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p/>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -56,7 +56,7 @@ import java.util.Locale;
 
 public class ShibbolethAutoLogin extends BaseAutoLogin {
 
-        private static Log _log = LogFactoryUtil.getLog(ShibbolethAutoLogin.class);
+    private static Log _log = LogFactoryUtil.getLog(ShibbolethAutoLogin.class);
 
     private static class AttributeFetcher {
         private final HttpServletRequest request;
@@ -89,64 +89,64 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
         }
     }
 
-	// addUser taken from SSO plugin
-	protected User addUser(
-			long companyId, String firstName, String lastName,
-			String emailAddress, String screenName, Locale locale)
-		throws Exception {
+    // addUser taken from SSO plugin
+    protected User addUser(
+            long companyId, String firstName, String lastName,
+            String emailAddress, String screenName, Locale locale)
+            throws Exception {
 
-		long creatorUserId = 0;
-		boolean autoPassword = true;
-		String password1 = null;
+        long creatorUserId = 0;
+        boolean autoPassword = true;
+        String password1 = null;
         String password2 = null;
         boolean autoScreenName = false;
         long facebookId = 0;
-		String openId = StringPool.BLANK;
-		String middleName = StringPool.BLANK;
-		int prefixId = 0;
-		int suffixId = 0;
-		boolean male = true;
-		int birthdayMonth = Calendar.JANUARY;
-		int birthdayDay = 1;
-		int birthdayYear = 1970;
-		String jobTitle = StringPool.BLANK;
-		long[] groupIds = null;
-		long[] organizationIds = null;
-		long[] roleIds = null;
-		long[] userGroupIds = null;
-		boolean sendEmail = false;
-		ServiceContext serviceContext = null;
+        String openId = StringPool.BLANK;
+        String middleName = StringPool.BLANK;
+        int prefixId = 0;
+        int suffixId = 0;
+        boolean male = true;
+        int birthdayMonth = Calendar.JANUARY;
+        int birthdayDay = 1;
+        int birthdayYear = 1970;
+        String jobTitle = StringPool.BLANK;
+        long[] groupIds = null;
+        long[] organizationIds = null;
+        long[] roleIds = null;
+        long[] userGroupIds = null;
+        boolean sendEmail = false;
+        ServiceContext serviceContext = null;
 
         return UserLocalServiceUtil.addUser(
                 creatorUserId, companyId, autoPassword, password1, password2,
                 autoScreenName, screenName, emailAddress, facebookId, openId,
-			locale, firstName, middleName, lastName, prefixId, suffixId, male,
-			birthdayMonth, birthdayDay, birthdayYear, jobTitle, groupIds,
-			organizationIds, roleIds, userGroupIds, sendEmail, serviceContext);
-	}
+                locale, firstName, middleName, lastName, prefixId, suffixId, male,
+                birthdayMonth, birthdayDay, birthdayYear, jobTitle, groupIds,
+                organizationIds, roleIds, userGroupIds, sendEmail, serviceContext);
+    }
 
-	@Override
-	protected String[] doLogin(
-			HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+    @Override
+    protected String[] doLogin(
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
 
         request.setCharacterEncoding("UTF-8");
         Enumeration headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
-            String name = (String)headerNames.nextElement();
+            String name = (String) headerNames.nextElement();
             System.out.println(String.format(" - Header: %-20s : %s", name,
                     request.getHeader(name)));
         }
 
         Company company = PortalUtil.getCompany(request);
-		
-		long companyId = company.getCompanyId();
 
-		if (!ShibbolethUtil.isEnabled(companyId)) {
-			return null;
-		}
+        long companyId = company.getCompanyId();
 
-		// Gather attribute fetching options.
+        if (!ShibbolethUtil.isEnabled(companyId)) {
+            return null;
+        }
+
+        // Gather attribute fetching options.
         boolean fetchFromHeaders = PrefsPropsUtil.getBoolean(
                 companyId, PropsKeys.SHIBBOLETH_HEADERS_ENABLED,
                 PropsValues.SHIBBOLETH_HEADERS_ENABLED);
@@ -173,41 +173,40 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
             return null;
         }
 
-		String authType = company.getAuthType();
+        String authType = company.getAuthType();
 
-		User user = null;
+        User user = null;
 
-		if (PrefsPropsUtil.getBoolean(
-				companyId, PropsKeys.SHIBBOLETH_IMPORT_FROM_LDAP,
-				PropsValues.SHIBBOLETH_IMPORT_FROM_LDAP)) {
+        if (PrefsPropsUtil.getBoolean(
+                companyId, PropsKeys.SHIBBOLETH_IMPORT_FROM_LDAP,
+                PropsValues.SHIBBOLETH_IMPORT_FROM_LDAP)) {
 
-			try {
-				if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
-					user = PortalLDAPImporterUtil.importLDAPUser(
+            try {
+                if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
+                    user = PortalLDAPImporterUtil.importLDAPUser(
                             companyId, shibbolethUserEmail, StringPool.BLANK);
                 } else {
-					user = PortalLDAPImporterUtil.importLDAPUser(
+                    user = PortalLDAPImporterUtil.importLDAPUser(
                             companyId, StringPool.BLANK, shibbolethUserName);
                 }
+            } catch (SystemException se) {
             }
-			catch (SystemException se) {
-			}
-		}
+        }
 
-		// log in the user
-		if (user == null) {
-			if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
-				user = UserLocalServiceUtil.fetchUserByEmailAddress(
+        // log in the user
+        if (user == null) {
+            if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
+                user = UserLocalServiceUtil.fetchUserByEmailAddress(
                         companyId, shibbolethUserEmail);
             } else {
-				user = UserLocalServiceUtil.fetchUserByScreenName(
+                user = UserLocalServiceUtil.fetchUserByScreenName(
                         companyId, shibbolethUserName);
             }
         }
 
-		// create a liferay user if none exists
-		// taken from SSO plugin
-		if (user == null) {
+        // create a liferay user if none exists
+        // taken from SSO plugin
+        if (user == null) {
             boolean autoCreateUser = PrefsPropsUtil.getBoolean(
                     companyId, PropsKeys.SHIBBOLETH_USER_AUTO_CREATE,
                     PropsValues.SHIBBOLETH_USER_AUTO_CREATE);
@@ -238,7 +237,7 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
             }
         }
 
-		// Get used Liferay groups
+        // Get used Liferay groups
         String shibbolethGroupsDelimiter = PrefsPropsUtil.getString(
                 companyId, PropsKeys.SHIBBOLETH_GROUPS_HEADER_SPLIT,
                 PropsValues.SHIBBOLETH_GROUPS_HEADER_SPLIT);
@@ -276,10 +275,10 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
 
         String[] credentials = new String[3];
 
-		credentials[0] = String.valueOf(user.getUserId());
-		credentials[1] = user.getPassword();
-		credentials[2] = Boolean.TRUE.toString();
+        credentials[0] = String.valueOf(user.getUserId());
+        credentials[1] = user.getPassword();
+        credentials[2] = Boolean.TRUE.toString();
 
-		return credentials;
-	}
+        return credentials;
+    }
 }
