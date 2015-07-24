@@ -19,7 +19,7 @@ Then upload the resulting WAR via Liferay's Control Panel -> Apps -> Install act
 TODO
 ====
 
- - Figure out how to set a display name, icon, and screenshot for the hook
+ - Figure out how to set a display name for the hook
 
 Liferay Portal Community Edition License
 ========================================
