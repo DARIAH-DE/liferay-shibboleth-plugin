@@ -16,11 +16,6 @@ To build:
 
 Then upload the resulting WAR via Liferay's Control Panel -> Apps -> Install action.
 
-TODO
-====
-
- - Figure out how to set a display name for the hook
-
 Liferay Portal Community Edition License
 ========================================
 

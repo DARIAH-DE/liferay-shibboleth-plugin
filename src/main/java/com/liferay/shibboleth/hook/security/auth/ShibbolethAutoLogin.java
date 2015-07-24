@@ -72,7 +72,7 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
             String value = (String) (fromHeader
                     ? request.getHeader(fullKey)
                     : request.getAttribute(fullKey));
-            System.out.println("Fetching " + fullKey + " from " + (fromHeader ? "headers" : "attrs") + " -> " + value);
+            _log.debug("Fetching " + fullKey + " from " + (fromHeader ? "headers" : "attrs") + " -> " + value);
             return reEncode ? reEncode(value) : value;
         }
 
@@ -125,14 +125,6 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
     protected String[] doLogin(
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
-        request.setCharacterEncoding("UTF-8");
-        Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String name = (String) headerNames.nextElement();
-            System.out.println(String.format(" - Header: %-20s : %s", name,
-                    request.getHeader(name)));
-        }
 
         Company company = PortalUtil.getCompany(request);
 
