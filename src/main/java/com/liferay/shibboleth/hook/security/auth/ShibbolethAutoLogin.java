@@ -42,11 +42,7 @@ import com.liferay.shibboleth.util.ShibbolethUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author Eric Chin
@@ -229,7 +225,11 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
                 }
 
                 user = addUser(
-                        companyId, shibbolethUserFirstName, shibbolethUserLastName, shibbolethUserEmail, screenName,
+                        companyId,
+                        shibbolethUserFirstName,
+                        shibbolethUserLastName,
+                        shibbolethUserEmail,
+                        screenName,
                         locale);
             } else {
                 // We can't continue...
@@ -237,13 +237,27 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
             }
         }
 
+        // Check user's full name is current and update
+        // it if not.
+        if (user.getFirstName() == null
+                || user.getLastName() == null
+                || !user.getFirstName().equals(shibbolethUserFirstName)
+                || !user.getLastName().equals(shibbolethUserLastName)) {
+            user.setFirstName(shibbolethUserFirstName);
+            user.setLastName(shibbolethUserLastName);
+            user.setModifiedDate(new Date());
+            UserLocalServiceUtil.updateUser(user);
+        }
+
+
         // Get used Liferay groups
         String shibbolethGroupsDelimiter = PrefsPropsUtil.getString(
                 companyId, PropsKeys.SHIBBOLETH_GROUPS_HEADER_SPLIT,
                 PropsValues.SHIBBOLETH_GROUPS_HEADER_SPLIT);
 
         boolean groupsEnableMapping = PrefsPropsUtil
-                .getBoolean(companyId, PropsKeys.SHIBBOLETH_GROUPS_ENABLEMAPPING, PropsValues.SHIBBOLETH_GROUPS_ENABLEMAPPING);
+                .getBoolean(companyId, PropsKeys.SHIBBOLETH_GROUPS_ENABLEMAPPING,
+                        PropsValues.SHIBBOLETH_GROUPS_ENABLEMAPPING);
 
         // map Shibboleth groups to Liferay groups
         if (shibbolethGroupsDelimiter != null
