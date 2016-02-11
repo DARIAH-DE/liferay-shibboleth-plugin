@@ -1,8 +1,9 @@
-Cendari Liferay Shibboleth Plugin
-=================================
+Liferay Shibboleth Plugin
+=========================
 
-The [Liferay Shibboleth Plugin](https://github.com/CENDARI/liferay-plugins/tree/master/hooks/shibboleth-hook)
-adapted for CENDARI. These modifications add several options to the Shibboleth plugin to enable auto-creating
+The Liferay Shibboleth Plugin adapted for CENDARI and DARIAH-DE.
+This code was originally forked from the official [liferay-plugins](https://github.com/liferay/liferay-plugins).
+Our modifications add several options to the Shibboleth plugin to enable auto-creating
 user accounts on first login and mapping of Shibboleth groups to Liferay roles.
 
 **NB**: This altered version of the plugin also contains a workaround for the incorrect decoding of UTF-8
@@ -29,3 +30,4 @@ General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the
 Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+

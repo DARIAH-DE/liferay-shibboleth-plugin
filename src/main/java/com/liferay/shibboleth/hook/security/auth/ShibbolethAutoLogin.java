@@ -47,6 +47,7 @@ import java.util.*;
 /**
  * @author Eric Chin
  * @author Carsten Thiel
+ * @author Roman Hausner
  * @author Mike Bryant
  */
 
