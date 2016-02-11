@@ -17,6 +17,7 @@ package com.liferay.shibboleth.util;
 
 /**
  * @author Eric Chin
+ * @author Markus Matoni
  */
 public class PropsKeys {
 
@@ -58,4 +59,7 @@ public class PropsKeys {
 
 	public static final String SHIBBOLETH_REENCODE_ENABLED =
 		"shibboleth.reencode.enabled";
+	
+	public static final String SHIBBOLETH_EPPN_ENABLED =
+		"shibboleth.eppn.enabled";
 }

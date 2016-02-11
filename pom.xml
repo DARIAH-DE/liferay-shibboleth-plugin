@@ -6,7 +6,7 @@
 	<artifactId>shibboleth-hook</artifactId>
 	<packaging>war</packaging>
 	<name>Shibboleth Single Sign On Hook</name>
-	<version>1.0.0</version>
+	<version>1.0.5</version>
 	<properties>
 		<liferay.version>6.2.1</liferay.version>
 		<liferay.maven.plugin.version>6.2.1</liferay.maven.plugin.version>
@@ -24,7 +24,7 @@
 					<appServerPortalDir>${liferay.app.server.portal.dir}</appServerPortalDir>
 					<liferayVersion>${liferay.version}</liferayVersion>
 					<pluginType>hook</pluginType>
-					<pluginName>CENDARI Shibboleth Authentication Plugin</pluginName>
+					<pluginName>Shibboleth Authentication Plugin</pluginName>
 				</configuration>
 			</plugin>
 			<plugin>

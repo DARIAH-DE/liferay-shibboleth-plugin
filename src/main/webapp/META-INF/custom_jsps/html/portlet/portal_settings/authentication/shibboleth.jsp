@@ -31,6 +31,7 @@ String shibbolethGroupsHeader = PrefsPropsUtil.getString(company.getCompanyId(),
 String shibbolethGroupsHeaderSplit = PrefsPropsUtil.getString(company.getCompanyId(), _SHIBBOLETH_GROUPS_HEADER_SPLIT_KEY, _SHIBBOLETH_GROUPS_HEADER_SPLIT_VALUE);
 boolean shibbolethHeadersEnabled = PrefsPropsUtil.getBoolean(company.getCompanyId(), _SHIBBOLETH_HEADERS_ENABLED_KEY, _SHIBBOLETH_HEADERS_ENABLED_VALUE);
 	boolean shibbolethReEncodeEnabled = PrefsPropsUtil.getBoolean(company.getCompanyId(), _SHIBBOLETH_REENCODE_ENABLED_KEY, _SHIBBOLETH_REENCODE_ENABLED_VALUE);
+	boolean shibbolethEppnEnabled = PrefsPropsUtil.getBoolean(company.getCompanyId(), _SHIBBOLETH_EPPN_ENABLED_KEY, _SHIBBOLETH_EPPN_ENABLED_VALUE);
 %>
 
 <aui:fieldset>
@@ -58,6 +59,8 @@ boolean shibbolethHeadersEnabled = PrefsPropsUtil.getBoolean(company.getCompanyI
 	<aui:input label="shibboleth-headers-enabled" helpMessage="shibboleth-headers-enabled-help" name='<%= "settings--" + _SHIBBOLETH_HEADERS_ENABLED_KEY + "--" %>' type="checkbox" value="<%= shibbolethHeadersEnabled %>" />
 
 	<aui:input label="shibboleth-reencode-enabled" helpMessage="shibboleth-reencode-enabled-help" name='<%= "settings--" + _SHIBBOLETH_REENCODE_ENABLED_KEY + "--" %>' type="checkbox" value="<%= shibbolethReEncodeEnabled %>" />
+	
+	<aui:input label="shibboleth-eppn-enabled" helpMessage="shibboleth-eppn-enabled-help" name='<%= "settings--" + _SHIBBOLETH_EPPN_ENABLED_KEY + "--" %>' type="checkbox" value="<%= shibbolethEppnEnabled %>" />
 
 </aui:fieldset>
 
@@ -113,5 +116,8 @@ private static final boolean _SHIBBOLETH_HEADERS_ENABLED_VALUE = GetterUtil.getB
 private static final String _SHIBBOLETH_REENCODE_ENABLED_KEY = "shibboleth.reencode.enabled";
 
 private static final boolean _SHIBBOLETH_REENCODE_ENABLED_VALUE = GetterUtil.getBoolean(PropsUtil.get(_SHIBBOLETH_REENCODE_ENABLED_KEY));
-%>
 
+private static final String _SHIBBOLETH_EPPN_ENABLED_KEY = "shibboleth.eppn.enabled";
+
+private static final boolean _SHIBBOLETH_EPPN_ENABLED_VALUE = GetterUtil.getBoolean(PropsUtil.get(_SHIBBOLETH_EPPN_ENABLED_KEY));
+%>

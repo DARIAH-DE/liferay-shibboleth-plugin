@@ -38,17 +38,21 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.shibboleth.util.PropsKeys;
 import com.liferay.shibboleth.util.PropsValues;
 import com.liferay.shibboleth.util.ShibbolethUtil;
+import com.liferay.portlet.expando.model.ExpandoValue;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
  * @author Eric Chin
  * @author Carsten Thiel
- * @author Roman Hausner
  * @author Mike Bryant
+ * @author Markus Matoni
  */
 
 public class ShibbolethAutoLogin extends BaseAutoLogin {
@@ -89,7 +93,7 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
     // addUser taken from SSO plugin
     protected User addUser(
             long companyId, String firstName, String lastName,
-            String emailAddress, String screenName, Locale locale)
+            String emailAddress, String screenName, Locale locale) //hier möglicherweise eppn hinzu?
             throws Exception {
 
         long creatorUserId = 0;
@@ -135,6 +139,7 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
             return null;
         }
 
+        
         // Gather attribute fetching options.
         boolean fetchFromHeaders = PrefsPropsUtil.getBoolean(
                 companyId, PropsKeys.SHIBBOLETH_HEADERS_ENABLED,
@@ -157,7 +162,7 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
                 .getAttribute(PropsKeys.SHIBBOLETH_LASTNAME_HEADER, PropsValues.SHIBBOLETH_LASTNAME_HEADER);
         String shibbolethGroups = fetcher
                 .getAttribute(PropsKeys.SHIBBOLETH_GROUPS_HEADER, PropsValues.SHIBBOLETH_GROUPS_HEADER);
-
+                
         if (Validator.isNull(shibbolethUserName) || Validator.isNull(shibbolethUserEmail)) {
             return null;
         }
@@ -224,6 +229,29 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
                         shibbolethUserEmail,
                         screenName,
                         locale);
+                
+                //Shibboleth can't read the '@' in user names, so there is a custom field called eppn
+                //This field represents the username including the '@'
+                boolean addEppnToUser = PrefsPropsUtil.getBoolean(
+                        companyId, PropsKeys.SHIBBOLETH_EPPN_ENABLED,
+                        PropsValues.SHIBBOLETH_EPPN_ENABLED);
+                		                                
+                if (addEppnToUser) {   
+                	//eppn part made by Roman
+		            ExpandoValue expandoObject = ExpandoValueLocalServiceUtil.getValue(ClassNameLocalServiceUtil.getClassNameId(User.class), "CUSTOM_FIELDS", "eppn", user.getUserId());
+		            if(expandoObject != null){
+		            	System.out.println("EPPN: " + expandoObject.getData());
+		            }
+		             
+		            long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
+		            ExpandoValueLocalServiceUtil.addValue(ClassNameLocalServiceUtil.getClassName(classNameId).getValue(), "CUSTOM_FIELDS", "eppn", user.getUserId(), shibbolethUserName); 
+		              	
+	            	//add eppn to user 
+	            	if (!user.getExpandoBridge().hasAttribute("eppn")) {
+	            		user.getExpandoBridge().addAttribute("eppn");
+	            	};
+                }
+	            	
             } else {
                 // We can't continue...
                 return null;

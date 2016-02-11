@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 
 /**
  * @author Eric Chin
+ * @author Markus Matoni
  */
 public class PropsValues {
 
@@ -62,4 +63,7 @@ public class PropsValues {
 
 	public static final boolean SHIBBOLETH_REENCODE_ENABLED = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.SHIBBOLETH_REENCODE_ENABLED));
+	
+	public static final boolean SHIBBOLETH_EPPN_ENABLED = GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.SHIBBOLETH_EPPN_ENABLED));
 }
