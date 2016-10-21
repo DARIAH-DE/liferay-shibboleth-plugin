@@ -154,6 +154,12 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
         String shibbolethUserName = fetcher
                 .getAttribute(PropsKeys.SHIBBOLETH_USERNAME_HEADER, PropsValues.SHIBBOLETH_USERNAME_HEADER);
         String screenName = shibbolethUserName != null ? shibbolethUserName.replaceAll("@", "") : null;
+        //eppn converting. only characters allowed that fit: a-z, A-Z, ., -, _)
+        if (shibbolethUserName != null)	{
+        	System.out.println("Shibboleth-Hook: normalizing shibbolethUserName from "+shibbolethUserName);
+        	screenName.replaceAll("[^0-9a-zA-Z._-]", "");
+        	System.out.println("Shibboleth-Hook: to "+screenName);
+        }
         String shibbolethUserEmail = fetcher
                 .getAttribute(PropsKeys.SHIBBOLETH_EMAIL_HEADER, PropsValues.SHIBBOLETH_EMAIL_HEADER);
         String shibbolethUserFirstName = fetcher
@@ -168,13 +174,11 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
         }
 
         String authType = company.getAuthType();
-
         User user = null;
 
         if (PrefsPropsUtil.getBoolean(
                 companyId, PropsKeys.SHIBBOLETH_IMPORT_FROM_LDAP,
                 PropsValues.SHIBBOLETH_IMPORT_FROM_LDAP)) {
-
             try {
                 if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
                     user = PortalLDAPImporterUtil.importLDAPUser(
@@ -192,15 +196,36 @@ public class ShibbolethAutoLogin extends BaseAutoLogin {
             if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
                 user = UserLocalServiceUtil.fetchUserByEmailAddress(
                         companyId, shibbolethUserEmail);
+                if (user == null) {
+            		System.out.println("Shibboleth-Hook: no emailaddress-match, checking for screenname match:");
+            		user = UserLocalServiceUtil.fetchUserByScreenName(companyId, screenName);
+                    if (user != null) {
+                    	System.out.println("Shibboleth-Hook: screenname-match, logging in...");
+                    	System.out.println("Shibboleth-Hook: updating email address to:"+shibbolethUserEmail);
+                    	user.setEmailAddress(shibbolethUserEmail);
+                    	UserLocalServiceUtil.updateUser(user);
+                    }
+            	}
+                if (user == null) {               	
+                	System.out.println("Shibboleth-Hook: no screenname-match");
+                }
+                else {
+                	System.out.println("Shibboleth-Hook: user loggin in:"+user.toString());
+                }
             } else {
                 user = UserLocalServiceUtil.fetchUserByScreenName(
                         companyId, shibbolethUserName);
+                if (user == null) {
+                    user = UserLocalServiceUtil.fetchUserByEmailAddress(
+                            companyId, shibbolethUserEmail);
+                }
             }
         }
 
         // create a liferay user if none exists
         // taken from SSO plugin
         if (user == null) {
+        	System.out.println("Shibboleth-Hook: creating user..");
             boolean autoCreateUser = PrefsPropsUtil.getBoolean(
                     companyId, PropsKeys.SHIBBOLETH_USER_AUTO_CREATE,
                     PropsValues.SHIBBOLETH_USER_AUTO_CREATE);
